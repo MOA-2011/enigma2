@@ -17,12 +17,12 @@ from enigma import SR
 class Mode4DSSetup(Screen, ConfigListScreen):
 	skin = """
 		<screen name="Mode4DSSetup" title="4DS mode Setup" position="fill" flags="wfNoBorder">
-		    <ePixmap pixmap="skin_default/buttons/button_red.png" position="305,648" size="220,28" alphatest="on" />
-		    <ePixmap pixmap="skin_default/buttons/button_green.png" position="450,648" size="220,28" alphatest="on" />
-		    <ePixmap pixmap="skin_default/buttons/button_yellow.png" position="595,648" size="220,28" alphatest="on" />
-    		<widget source="key_yellow" render="Label" position="615,643" size="220,28" backgroundColor="darkgrey" zPosition="2" transparent="1" foregroundColor="grey" font="Regular;24" halign="left" />
-   			<widget source="key_red" render="Label" position="325,643" size="220,28" backgroundColor="darkgrey" zPosition="2" transparent="1" foregroundColor="grey" font="Regular;24" halign="left" />
-    		<widget source="key_green" render="Label" position="470,643" size="220,28" backgroundColor="darkgrey" zPosition="2" transparent="1" foregroundColor="grey" font="Regular;24" halign="left" />
+			<ePixmap pixmap="skin_default/buttons/button_red.png" position="305,648" size="220,28" alphatest="on" />
+			<ePixmap pixmap="skin_default/buttons/button_green.png" position="450,648" size="220,28" alphatest="on" />
+			<ePixmap pixmap="skin_default/buttons/button_yellow.png" position="595,648" size="220,28" alphatest="on" />
+			<widget source="key_yellow" render="Label" position="615,643" size="220,28" backgroundColor="darkgrey" zPosition="2" transparent="1" foregroundColor="grey" font="Regular;24" halign="left" />
+			<widget source="key_red" render="Label" position="325,643" size="220,28" backgroundColor="darkgrey" zPosition="2" transparent="1" foregroundColor="grey" font="Regular;24" halign="left" />
+			<widget source="key_green" render="Label" position="470,643" size="220,28" backgroundColor="darkgrey" zPosition="2" transparent="1" foregroundColor="grey" font="Regular;24" halign="left" />
 			<widget name="config" position="530,110" size="690,500" scrollbarMode="showOnDemand" selectionPixmap="PLi-HD/buttons/sel.png" />
 			<widget source="description" render="Label" position="530,365" size="690,200" transparent="1" font="Regular;21" valign="center" halign="center" />
 			<widget source="Statustext" render="Label" position="495,587" size="200,26" transparent="1" zPosition="10" font="Regular;20" valign="center" halign="right" />
@@ -120,11 +120,12 @@ class Mode4DSSetup(Screen, ConfigListScreen):
 				SR.getInstance().modeOn()
 			else:
 				SR.getInstance().modeOff()
-			self.keySave()
+#			self.keySave()
 			self.close()
 
 			from enigma import quitMainloop
 			from Screens.Standby import QuitMainloopScreen
+
 			self.quitScreen = self.session.instantiateDialog(QuitMainloopScreen, retvalue=2)
 			self.quitScreen.show()
 			quitMainloop(2)
