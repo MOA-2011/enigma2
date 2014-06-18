@@ -4,6 +4,7 @@ from Components.ActionMap import ActionMap
 from Components.Sources.List import List
 from Components.Label import Label
 import os, fcntl
+from enigma import eDVBVolumecontrol #IQON
 
 class ChangeRCU(Screen, ConfigListScreen):
 	skin = """
@@ -27,7 +28,7 @@ class ChangeRCU(Screen, ConfigListScreen):
 		self.rculist = []
 
 		# keep order
-		self.rculist.append("RCU for TM-2T [ver1.0]")		# 1
+		self.rculist.append("RCU for TM-2T/TM-NANO-2T [ver1.0]")		# 1
 		self.rculist.append("RCU for TM-TWIN-OE[ver1.0]")	# 2
 		self.rculist.append("RCU for IOS-100HD[ver1.0]")	# 3
 		self.rculist.append("RCU for TM-SINGLE[ver1.0]")	# 4
@@ -67,8 +68,8 @@ from enigma import eTimer
 class ChangeRCUWithoutRCU():
 	def __init__(self):
 		# support only tm models
-		self.devices = { "tm2toe":1, "tmtwinoe":2, "tmsingle":4, "tmnanooe":4}
-		self.models = { 1:"TM-2T-OE", 2:"TM-TWIN-OE", 4:"TM-SINGLE/TM-NANO-OE" }
+		self.devices = { "tm2toe":1, "tmnano2t":1, "tmtwinoe":2, "tmsingle":4, "tmnanooe":4}
+		self.models = { 1:"TM-2T-OE/TM-NANO-2T", 2:"TM-TWIN-OE", 4:"TM-SINGLE/TM-NANO-OE" }
 		self.rcu = self.devices.get(HardwareInfo().get_device_name())
 		self.rcuSaveFile = "/etc/.rcu"
 		if os.path.exists(self.rcuSaveFile):
@@ -80,13 +81,26 @@ class ChangeRCUWithoutRCU():
 				pass
 
 		self.menuKeyCount = 0
+		self.ChannelMinusKeyCount = 0
+		self.volctrl = eDVBVolumecontrol.getInstance() #IQON
 
-		self.resetMenuKeyCountTimer = eTimer()
-		self.resetMenuKeyCountTimer.callback.append(self.resetMenuKeyCount)
+		model = HardwareInfo().get_device_name()
+
+		# tmnano2t has not menu key.
+		if model in ("tmnano2t"):
+			self.resetChannelMinusKeyCountTimer = eTimer()
+			self.resetChannelMinusKeyCountTimer.callback.append(self.resetChannelMinusKeyCount)
+		else:
+			self.resetMenuKeyCountTimer = eTimer()
+			self.resetMenuKeyCountTimer.callback.append(self.resetMenuKeyCount)
 
 	def resetMenuKeyCount(self):
 		# if not pressed menu key in 1000ms, reset count
 		self.menuKeyCount = 0
+		
+	def resetChannelMinusKeyCount(self):
+		# if not pressed channelminuskey in 1000ms, reset count
+		self.ChannelMinusKeyCount = 0
 
 	def countMenuKey(self):	
 		if self.rcu and HardwareInfo().get_device_name() in self.devices.keys():
@@ -98,8 +112,21 @@ class ChangeRCUWithoutRCU():
 				# if not pressed menu key in 1000ms, reset count
 				self.resetMenuKeyCountTimer.start(1000)
 
+	def countChannelMinusKey(self):
+		vol = self.volctrl.getVolume()
+		if vol == 0:
+			if self.rcu and HardwareInfo().get_device_name() in self.devices.keys():
+				self.resetChannelMinusKeyCountTimer.stop()
+				self.ChannelMinusKeyCount += 1
+				if self.ChannelMinusKeyCount == 5:
+					self.switchRCU()
+				else:
+					# if not pressed menu key in 1000ms, reset count
+					self.resetChannelMinusKeyCountTimer.start(1000)
+
 	def switchRCU(self):
 		self.menuKeyCount = 0
+		self.ChannelMinusKeyCount = 0
 
 		# skip non tm rcu
 		self.rcu += 1

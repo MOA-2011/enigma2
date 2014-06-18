@@ -107,7 +107,7 @@ class Update(Screen):
 			<widget name="bottom" position="10,355" zPosition="2" size="540,20" valign="center" halign="center" font="Regular;21" transparent="1" shadowColor="black" shadowOffset="-1,-1" />
         </screen>"""
 
-	SERVER_DNS = "ilove.hobby-site.com"
+	SERVER_DNS = "en3.homeftp.net"
 
 	INTERNET_UPDATE = 0
 	INTERNET_UPDATE_BETA = 1

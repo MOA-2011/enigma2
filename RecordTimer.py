@@ -741,10 +741,13 @@ class RecordTimer(timer.Timer):
 
 		list.append('</timers>\n')
 
-		file = open(self.Filename + ".writing", "w")
-		for x in list:
-			file.write(x)
-		file.flush()
+		try:
+			file = open(self.Filename + ".writing", "w")
+			for x in list:
+				file.write(x)
+			file.flush()
+		except:
+			return
 
 		import os
 		os.fsync(file.fileno())

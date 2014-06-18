@@ -1,5 +1,6 @@
 from ChannelSelection import ChannelSelection, BouquetSelector, SilentBouquetSelector
 
+from Components.Sources.StaticText import StaticText #IQON
 from Components.ActionMap import ActionMap, HelpableActionMap
 from Components.ActionMap import NumberActionMap
 from Components.Harddisk import harddiskmanager
@@ -39,7 +40,7 @@ from Tools.Directories import fileExists, getRecordingFilename, moveFiles
 from Tools.HardwareInfo import HardwareInfo
 
 from enigma import eTimer, eServiceCenter, eDVBServicePMTHandler, iServiceInformation, \
-	iPlayableService, eServiceReference, eEPGCache, eActionMap
+	iPlayableService, eServiceReference, eEPGCache, eActionMap, eDVBVolumecontrol #IQON
 
 from time import time, localtime, strftime
 from os import stat as os_stat, system as os_system, chmod as os_chmod, path as os_path, system as os_system
@@ -515,7 +516,11 @@ class InfoBarChannelSelection:
 	def __init__(self):
 		#instantiate forever
 		self.servicelist = self.session.instantiateDialog(ChannelSelection)
-
+		self.volctrl = eDVBVolumecontrol.getInstance() #IQON
+		
+		from Screens.ChangeRCU import ChangeRCUWithoutRCU #IQON
+		self.rcuChanger = ChangeRCUWithoutRCU() # IQON
+		
 # [sidabary-channel-list 2013/12/11
 #		self.CHECKMODEL = ["optimussos1", "optimussos2", "optimussos1plus", "optimussos2plus"]
 # ]		
@@ -620,7 +625,9 @@ class InfoBarChannelSelection:
 # [iq
 	def ChannelMinusPressed(self):
 # iq]
+		vol = self.volctrl.getVolume() #IQON
 		model = HardwareInfo().get_device_name()
+
 		if model == "mediabox":
 			if not config.servicelist.startupservice.value and not config.tv.lastservice.value:
 				self.servicelist.showAllServices()
@@ -640,6 +647,10 @@ class InfoBarChannelSelection:
 		else:
 			self.servicelist.moveUp()
 		self.servicelist.zap(enable_pipzap = True)
+		
+		# add channel volume 0 
+		if model in ("tmnano2t") and vol == 0:
+			self.rcuChanger.countChannelMinusKey()
 # [iq
 	def ChannelPlusPressed(self):
 # iq]
@@ -779,8 +790,11 @@ class InfoBarMenu:
 
 		self.session.openWithCallback(self.mainMenuClosed, MainMenu, menu)
 
+		model = HardwareInfo().get_device_name()
+
+		if model not in ("tmnano2t"):
 # iq - [
-		self.rcuChanger.countMenuKey()
+			self.rcuChanger.countMenuKey()
 # ]
 
 	def mainMenuClosed(self, *val):

@@ -1,4 +1,5 @@
 from Screen import Screen
+from Screens.Volume import Volume
 from Screens.HelpMenu import HelpableScreen
 from Screens.MessageBox import MessageBox
 from Components.config import config, ConfigText, ConfigPassword, KEY_LEFT, KEY_RIGHT, KEY_HOME, KEY_END, KEY_0, KEY_DELETE, KEY_BACKSPACE, KEY_OK, KEY_TOGGLEOW, KEY_ASCII, KEY_TIMEOUT, KEY_NUMBERS
@@ -10,8 +11,8 @@ from Components.ActionMap import NumberActionMap
 from Components.MenuList import MenuList
 from Components.ConfigList import ConfigList
 from Components.Sources.List import List
-from enigma import eTimer, eEnv
-
+from Components.VolumeControl import VolumeControl # IQON
+from enigma import eTimer, eEnv, eDVBVolumecontrol # IQON
 from xml.sax import make_parser
 from xml.sax.handler import ContentHandler
 
@@ -210,38 +211,74 @@ class Wizard(Screen):
 		self.lcdCallbacks = []
 		
 		self.disableKeys = False
-		
-		self["actions"] = NumberActionMap(["WizardActions", "NumberActions", "ColorActions", "SetupActions", "InputAsciiActions", "KeyboardInputActions"],
-		{
-			"gotAsciiCode": self.keyGotAscii,
-			"ok": self.ok,
-			"back": self.back,
-			"left": self.left,
-			"right": self.right,
-			"up": self.up,
-			"down": self.down,
-			"red": self.red,
-			"green": self.green,
-			"yellow": self.yellow,
-			"blue":self.blue,
-			"deleteBackward": self.deleteBackward,
-			"deleteForward": self.deleteForward,
-			"1": self.keyNumberGlobal,
-			"2": self.keyNumberGlobal,
-			"3": self.keyNumberGlobal,
-			"4": self.keyNumberGlobal,
-			"5": self.keyNumberGlobal,
-			"6": self.keyNumberGlobal,
-			"7": self.keyNumberGlobal,
-			"8": self.keyNumberGlobal,
-			"9": self.keyNumberGlobal,
-			"0": self.keyNumberGlobal,
+
+		model = HardwareInfo().get_device_name()
+
+		if model in ("tmnano2t"):
+			self["actions"] = NumberActionMap(["WizardActions", "NumberActions", "ColorActions", "SetupActions", "InputAsciiActions", "KeyboardInputActions"],
+			{
+				"gotAsciiCode": self.keyGotAscii,
+				"ok": self.ok,
+				"back": self.back,
+				"left": self.left,
+				"right": self.right,
+				"up": self.up,
+				"down": self.down,
+				"red": self.red,
+				"green": self.green,
+				"yellow": self.yellow,
+				"blue":self.blue,
+				"deleteBackward": self.deleteBackward,
+				"deleteForward": self.deleteForward,
+				"1": self.keyNumberGlobal,
+				"2": self.keyNumberGlobal,
+				"3": self.keyNumberGlobal,
+				"4": self.keyNumberGlobal,
+				"5": self.keyNumberGlobal,
+				"6": self.keyNumberGlobal,
+				"7": self.keyNumberGlobal,
+				"8": self.keyNumberGlobal,
+				"9": self.keyNumberGlobal,
+				"0": self.keyNumberGlobal,
 # iq - [
-			"prevSubservice": self.checkTestMenuKey0,
-			"nextSubservice": self.checkTestMenuKey1,
-			"menu": self.countMenuKey
+				"prevSubservice": self.checkTestMenuKey0,
+				"nextSubservice": self.checkTestMenuKey1,
+				"menu": self.countMenuKey,
+				"pageDown": self.countChannelMinusKey
 # ]
 		}, -1)
+		else:
+			self["actions"] = NumberActionMap(["WizardActions", "NumberActions", "ColorActions", "SetupActions", "InputAsciiActions", "KeyboardInputActions"],
+			{
+				"gotAsciiCode": self.keyGotAscii,
+				"ok": self.ok,
+				"back": self.back,
+				"left": self.left,
+				"right": self.right,
+				"up": self.up,
+				"down": self.down,
+				"red": self.red,
+				"green": self.green,
+				"yellow": self.yellow,
+				"blue":self.blue,
+				"deleteBackward": self.deleteBackward,
+				"deleteForward": self.deleteForward,
+				"1": self.keyNumberGlobal,
+				"2": self.keyNumberGlobal,
+				"3": self.keyNumberGlobal,
+				"4": self.keyNumberGlobal,
+				"5": self.keyNumberGlobal,
+				"6": self.keyNumberGlobal,
+				"7": self.keyNumberGlobal,
+				"8": self.keyNumberGlobal,
+				"9": self.keyNumberGlobal,
+				"0": self.keyNumberGlobal,
+# iq - [
+				"prevSubservice": self.checkTestMenuKey0,
+				"nextSubservice": self.checkTestMenuKey1,
+				"menu": self.countMenuKey
+# ]
+			}, -1)
 
 		self["VirtualKB"] = NumberActionMap(["VirtualKeyboardActions"],
 		{
@@ -250,12 +287,15 @@ class Wizard(Screen):
 		
 		self["VirtualKB"].setEnabled(False)
 
+
 # iq - [	
 		self.testMenuKeyCount = 0
 
+		self.volctrl = eDVBVolumecontrol.getInstance()
+
 		# support only tm models
-		self.devices = { "tm2toe":1, "tmtwinoe":2, "tmsingle":4, "tmnanooe":4 }
-		self.models = { 1:"TM-2T", 2:"TM-TWIN", 4:"TM-SINGLE/TM-NANO-OE" }
+		self.devices = { "tm2toe":1, "tmnano2t":1, "tmtwinoe":2, "tmsingle":4, "tmnanooe":4 }
+		self.models = { 1:"TM-2T/TM-NANO-2T", 2:"TM-TWIN", 4:"TM-SINGLE/TM-NANO-OE" }
 		self.rcu = self.devices.get(HardwareInfo().get_device_name())
 		self.rcuSaveFile = "/etc/.rcu"
 		if os.path.exists(self.rcuSaveFile):
@@ -267,13 +307,24 @@ class Wizard(Screen):
 				pass
 
 		self.menuKeyCount = 0
+		self.ChannelMinusKeyCount = 0
 
-		self.resetMenuKeyCountTimer = eTimer()
-		self.resetMenuKeyCountTimer.callback.append(self.resetMenuKeyCount)
+		model = HardwareInfo().get_device_name()
+
+		if model in ("tmnano2t"):
+			self.resetChannelMinusKeyCountTimer = eTimer()
+			self.resetChannelMinusKeyCountTimer.callback.append(self.resetChannelMinusKeyCount)
+		else:
+			self.resetMenuKeyCountTimer = eTimer()
+			self.resetMenuKeyCountTimer.callback.append(self.resetMenuKeyCount)
 
 	def resetMenuKeyCount(self):
 		# if not pressed menu key in 1000ms, reset count
 		self.menuKeyCount = 0
+
+	def resetChannelMinusKeyCount(self):
+		# if not pressed menu key in 1000ms, reset count
+		self.ChannelMinusKeyCount = 0
 
 	def countMenuKey(self):	
 		if self.rcu and HardwareInfo().get_device_name() in self.devices.keys():
@@ -301,6 +352,41 @@ class Wizard(Screen):
 			else:
 				# if not pressed menu key in 1000ms, reset count
 				self.resetMenuKeyCountTimer.start(1000)
+
+	def countChannelMinusKey(self):
+		vol = self.volctrl.getVolume()
+		print "@@@ vol @@@ ::", vol
+		# only tmnano2t execute
+		
+		model = HardwareInfo().get_device_name()
+		
+		if model in ("tmnano2t") and vol == 0:
+			if self.rcu and HardwareInfo().get_device_name() in self.devices.keys():
+				self.resetChannelMinusKeyCountTimer.stop()
+				self.ChannelMinusKeyCount += 1
+				if self.ChannelMinusKeyCount== 5:
+					self.ChannelMinusKeyCount= 0
+					# skip non tm rcu
+					self.rcu += 1
+					if self.rcu == 3:
+						self.rcu += 1
+					elif self.rcu > 4:
+						self.rcu = 1
+
+					rcDevice = os.open("/dev/RCProtocol", os.O_RDWR)
+					fcntl.ioctl(rcDevice, 7, self.rcu)
+					os.close(rcDevice)
+
+					fd = open(self.rcuSaveFile, "w+");
+					fd.write("%d" % self.rcu)
+					fd.close()
+
+					self.session.openWithCallback(self.showVfdMessage, MessageBox, (_("Warning :\n Remote Controller has been set to %s" % self.models.get(self.rcu))), MessageBox.TYPE_WARNING, timeout=7)
+				else:
+					# if not pressed menu key in 1000ms, reset count
+					self.resetChannelMinusKeyCountTimer.start(1000)
+		else:
+			self.resetChannelMinusKeyCountTimer.stop()
 
 	def showVfdMessage(self, ret):
 		os.system("echo \"RCU: %s\" > /proc/stb/lcd/show_txt" % self.models.get(self.rcu))
