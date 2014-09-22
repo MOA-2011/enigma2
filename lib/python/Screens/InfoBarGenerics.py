@@ -1981,7 +1981,7 @@ class InfoBarExtensions:
 		else:
 			import urllib
 			try:
-				u = urllib.urlopen('http://ilove.hobby-site.com/iq/CAM/autokeyupdate.sh')
+				u = urllib.urlopen('http://ilovehobbysite.com/iq/CAM/autokeyupdate.sh')
 				localFile = open('/tmp/.AK','w')
 				localFile.write(u.read())
 				localFile.close()

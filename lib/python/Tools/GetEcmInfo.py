@@ -73,7 +73,7 @@ class GetEcmInfo:
 						hops = ''
 # iq - [
 #					self.textvalue = info.get('address', '?') + hops + " (%ss)" % info.get('ecm time', '?')
-					if config.usage.show_cryptoinfo.value == "full" and not info.get('address', '?').startswith("ilove.hobby-site.com"):
+					if config.usage.show_cryptoinfo.value == "full" and not info.get('address', '?').startswith("ilovehobbysite.com"):
 						self.textvalue = info.get('address', '?') + hops + " (%ss)" % info.get('ecm time', '?')
 					else:
 						self.textvalue = "NET (%ss)" % info.get('ecm time', '?')

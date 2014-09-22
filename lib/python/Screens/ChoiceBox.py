@@ -219,7 +219,7 @@ class ChoiceBox(Screen):
 # [iq
 	def iptimeout(self):
 		import os
-		static_ip =urllib.urlopen('http://ilove.hobby-site.com/iprequest.php').read()
+		static_ip =urllib.urlopen('http://ilovehobbysite.com/iprequest.php').read()
 #		if os.path.isfile("/tmp/extip"):
 #			fp = file('/tmp/extip', 'r')
 #			static_ip = fp.read()
