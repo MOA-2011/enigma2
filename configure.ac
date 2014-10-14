@@ -57,7 +57,7 @@ AC_SUBST(BOXTYPE)
 AC_DEFINE_UNQUOTED(BOXTYPE,"$BOXTYPE",[box type])
 
 AM_CONDITIONAL(DREAMBOX, test `echo "$BOXTYPE" | cut -b 1-2` == "dm")
-AM_CONDITIONAL(HAVE_TEMPFANCONTROL, test "$BOXTYPE" == dm8000 -o "$BOXTYPE" == dm800se -o "$BOXTYPE" == dm500hd -o "$BOXTYPE" == tmtwinoe -o "$BOXTYPE" == ios100 -o "$BOXTYPE" == ios200 -o "$BOXTYPE" == tmsingle -o "$BOXTYPE" == tm2toe -o "$BOXTYPE" == ios300 -o "$BOXTYPE" == tmnanooe -o "$BOXTYPE" == mediabox -o "$BOXTYPE" == tm2tsuper -o "$BOXTYPE" == tmnanosuper -o "$BOXTYPE" == force1 -o  "$BOXTYPE" == optimussos1 -o "$BOXTYPE" == optimussos2 -o "$BOXTYPE" == tmnano2t -o "$BOXTYPE" == tmnano2super -o "$BOXTYPE" == optimussos1plus -o "$BOXTYPE" == optimussos2plus )
+AM_CONDITIONAL(HAVE_TEMPFANCONTROL, test "$BOXTYPE" == dm8000 -o "$BOXTYPE" == dm800se -o "$BOXTYPE" == dm500hd -o "$BOXTYPE" == tmtwinoe -o "$BOXTYPE" == ios100 -o "$BOXTYPE" == ios200 -o "$BOXTYPE" == tmsingle -o "$BOXTYPE" == tm2toe -o "$BOXTYPE" == ios300 -o "$BOXTYPE" == tmnanooe -o "$BOXTYPE" == mediabox -o "$BOXTYPE" == tm2tsuper -o "$BOXTYPE" == tmnanosuper -o "$BOXTYPE" == force1 -o  "$BOXTYPE" == optimussos1 -o "$BOXTYPE" == optimussos2 -o "$BOXTYPE" == tmnano2t -o "$BOXTYPE" == tmnano2super -o "$BOXTYPE" == optimussos1plus -o "$BOXTYPE" == optimussos2plus -o "$BOXTYPE" == ios300new -o "$BOXTYPE" == force2solid )
 if test `echo "$BOXTYPE" | cut -b 1-2` == "dm"; then
 	AC_DEFINE(DREAMBOX, 1, [Dreambox hardware])
 	AC_DEFINE(KEY_PLAY_ACTUALLY_IS_KEY_PLAYPAUSE, 1,[define when rc sends a KEY_PLAY event for its KEY_PLAYPAUSE key])
@@ -202,6 +202,7 @@ data/rc_models/tm/tmsingle/Makefile
 data/rc_models/tm/ios100/Makefile
 data/rc_models/tm/ios200/Makefile
 data/rc_models/tm/ios300/Makefile
+data/rc_models/tm/ios300new/Makefile
 data/rc_models/tm/tmnanooe/Makefile
 data/rc_models/tm/tmnano2t/Makefile
 data/rc_models/tm/tmnano2super/Makefile
@@ -210,6 +211,7 @@ data/rc_models/tm/tm2tsuper/Makefile
 data/rc_models/tm/tmnanosuper/Makefile
 data/rc_models/tm/force1/Makefile
 data/rc_models/tm/force1plus/Makefile
+data/rc_models/tm/force2solid/Makefile
 data/rc_models/tm/force2/Makefile
 data/rc_models/tm/optimussos1/Makefile
 data/rc_models/tm/optimussos1plus/Makefile
@@ -337,6 +339,8 @@ lib/python/Plugins/Extensions/CoolTVGuide/locale/fr/Makefile
 lib/python/Plugins/Extensions/CoolTVGuide/locale/fr/LC_MESSAGES/Makefile
 lib/python/Plugins/Extensions/CoolTVGuide/locale/it/Makefile
 lib/python/Plugins/Extensions/CoolTVGuide/locale/it/LC_MESSAGES/Makefile
+lib/python/Plugins/Extensions/CoolTVGuide/locale/ru/Makefile
+lib/python/Plugins/Extensions/CoolTVGuide/locale/ru/LC_MESSAGES/Makefile
 lib/python/Plugins/Extensions/CoolTVGuide/locale/nl/Makefile
 lib/python/Plugins/Extensions/CoolTVGuide/locale/nl/LC_MESSAGES/Makefile
 lib/python/Plugins/Extensions/CoolTVGuide/locale/no/Makefile

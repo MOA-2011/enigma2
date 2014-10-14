@@ -53,7 +53,7 @@ class HardwareInfo:
 			return True
 
 	def has_rfmod(self):
-		DEVICES_WITHOUT_RFMOD = [ 'tmsingle', 'ios300hd' , 'tmnanooe', 'mediabox', 'force1', 'tmnanosuper' ]
+		DEVICES_WITHOUT_RFMOD = [ 'tmsingle', 'ios300hd' , 'ios300newhd', 'tmnanooe', 'mediabox', 'force1', 'tmnanosuper' ]
 		if HardwareInfo.device_name in DEVICES_WITHOUT_RFMOD:
 			return False
 		else:
@@ -67,14 +67,14 @@ class HardwareInfo:
 			return True
 
 	def has_vcr(self):
-		DEVICES_WITHOUT_VCR = [ 'tmsingle', 'tm2toe', 'ios300hd', 'ios200hd' , 'tmnanooe', 'mediabox', 'force1', 'tmnanosuper' ]
+		DEVICES_WITHOUT_VCR = [ 'tmsingle', 'tm2toe', 'ios300hd', 'ios200hd' , 'ios300newhd', 'tmnanooe', 'mediabox', 'force1', 'tmnanosuper' ]
 		if HardwareInfo.device_name in DEVICES_WITHOUT_VCR:
 			return False
 		else:
 			return True
 
 	def has_yuv(self):
-		DEVICES_WITHOUT_YUV = [ 'tmsingle', 'tm2toe', 'ios300hd', 'tmnanooe', 'mediabox', 'tmnanosuper' ,'optimussos1' ]
+		DEVICES_WITHOUT_YUV = [ 'tmsingle', 'tm2toe', 'ios300hd', 'ios300newhd', 'tmnanooe', 'mediabox', 'tmnanosuper' ,'optimussos1' ,'force2solid' ]
 		if HardwareInfo.device_name in DEVICES_WITHOUT_YUV:
 			return False
 		else:
@@ -95,7 +95,7 @@ class HardwareInfo:
 			return False
 
 	def has_scart(self):
-		DEVICES_WITHOUT_SCART = [ 'tmnanooe', 'ios200hd', 'force1', 'tmnanosuper', 'optimussos2', 'optimussos1', 'tmnano2t' ]
+		DEVICES_WITHOUT_SCART = [ 'tmnanooe', 'ios200hd', 'ios300newhd', 'force1', 'tmnanosuper', 'optimussos2', 'optimussos1', 'tmnano2t', 'force2solid' ]
 		if HardwareInfo.device_name in DEVICES_WITHOUT_SCART:
 			return False
 		else:

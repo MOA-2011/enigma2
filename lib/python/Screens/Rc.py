@@ -27,7 +27,7 @@ class Rc:
 		if HardwareInfo().get_device_name() in ('twin', 'tm2toe' , '2t', 'tmtwinoe' , 'tmsingle', 'tmsinglemini', 'tmnanooe', 'tmnano2t', 'tm2tsuper', 'tmnanosuper', 'tmnano2super' ):
 			self.selectpics.append((self.rcheighthalf, ["arrowdown", "arrowdown2"], (-23,-98)))
 			self.selectpics.append((self.rcheight, ["arrowup", "arrowup2"], (-23,0)))
-		if HardwareInfo().get_device_name() in ('ios100hd', 'ios200hd' , 'ios300hd' , 'mediabox', 'optimussos1', 'optimussos2', 'force1', 'optimussos1plus', 'optimussos2plus', 'force1plus', 'force2'):
+		if HardwareInfo().get_device_name() in ('ios100hd', 'ios200hd' , 'ios300hd' , 'ios300newhd' , 'mediabox', 'optimussos1', 'optimussos2', 'force1', 'optimussos1plus', 'optimussos2plus', 'force1plus', 'force2', 'force2solid' ):
 			self.selectpics.append((self.rcheighthalf, ["arrowdown", "arrowdown2"], (-23,-125)))
 			self.selectpics.append((self.rcheight, ["arrowup", "arrowup2"], (-22,-45)))
 		else:

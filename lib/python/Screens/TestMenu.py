@@ -28,8 +28,9 @@ class TestMenu(Screen):
 # 1.0.2 - optimussos1, optimussos2 model added.
 # 1.0.3 - de language update.
 # 1.0.4 - optimussos1plus, optimussos2plus model added.
+# 1.0.5 - ios300newhd model added.
 
-	TEST_PROG_VERSION = "1.0.4"
+	TEST_PROG_VERSION = "1.0.5"
 	skin = """
         <screen name="TestMenu" position="fill" title="Test Menu" flags="wfNoBorder">
 			<eLabel position="fill" backgroundColor="transpBlack" zPosition="-50"/>
@@ -172,6 +173,12 @@ class TestMenu(Screen):
 			"/devices/platform/ehci-brcm.0/usb1/1-1/1-1:1.0": 1,
 			"/devices/platform/ehci-brcm.0/usb1/1-2/1-2:1.0": 2,
 		},
+		"ios300newhd":
+		{
+			"/devices/platform/ehci-brcm.1/usb2/2-1/2-1:1.0": 0,
+			"/devices/platform/ehci-brcm.0/usb1/1-2/1-2:1.0": 1,
+			"/devices/platform/ehci-brcm.0/usb1/1-1/1-1:1.0": 2,
+		},
 		"mediabox":
 		{
 			"/devices/platform/ehci-brcm.1/usb2/2-1/2-1:1.0": 0,
@@ -280,15 +287,15 @@ class TestMenu(Screen):
 		self.has_nav_keys = model not in ("tmtwinoe", "ios100hd", "mediabox", "ios200hd", "optimussos2", "optimussos2plus","force1","force1plus")
 		self.has_8_buttons = model in ("tmtwinoe", "ios100hd")
 		self.has_9_buttons = model in ("tm2toe", "tmsingle")
-		self.has_7_buttons = model in ("tmnanooe", "ios300hd", "optimussos1", "optimussos1plus", "tmnano2super")
+		self.has_7_buttons = model in ("tmnanooe", "ios300hd","ios300newhd", "optimussos1", "optimussos1plus", "tmnano2super")
 		self.has_5_buttons = model in ("mediabox","ios200hd", "optimussos2", "tmnano2t", "optimussos2plus", "force1", "force1plus")
 		self.has_fan_sensor = model in ("tmtwinoe", "tm2toe", "ios100hd", "optimussos1plus", "optimussos2plus", "tmnano2super", "force1", "force1plus")
 		self.has_sata = model not in ("ios300hd", "mediabox")
 #		self.has_1_rear_usb = "tmnano" in model
 		self.has_sc41cr = model in ("ios200hd", "optimussos1","optimussos2", "tmnano2t")
-		self.has_sc50cr = model in ("tmnanooe", "optimussos1plus", "optimussos2plus", "tmnano2super", "force1", "force1plus")
-		self.has_1_tuner = model in ("tmnanooe", "ios300hd", "mediabox", "tmsingle", "optimussos1")
-		self.has_vfd = model not in ("tmsingle", "tmnanooe", "ios200hd", "ios300hd", "mediabox", "optimussos1", "tmnano2t", "optimussos1plus")
+		self.has_sc50cr = model in ("tmnanooe", "ios300newhd", "optimussos1plus", "optimussos2plus", "tmnano2super", "force1", "force1plus")
+		self.has_1_tuner = model in ("tmnanooe", "ios300hd", "ios300newhd", "mediabox", "tmsingle", "optimussos1")
+		self.has_vfd = model not in ("tmsingle", "tmnanooe", "ios200hd", "ios300hd", "ios300newhd", "mediabox", "optimussos1", "tmnano2t", "optimussos1plus")
 
 		self.MENU_LIST = []
 		self.MENU_LIST.append([ "[T1] H18,  720P, CVBS, 4:3,  22OFF (TRACE URB)",	"ch1",	self.func ])

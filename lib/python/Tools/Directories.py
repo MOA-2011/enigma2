@@ -44,7 +44,7 @@ PATH_FALLBACK = 2
 # songingeun - [
 HDD_PATH="/hdd/movie/"
 from Tools.HardwareInfo import HardwareInfo
-if HardwareInfo().get_device_name() in ('ios300hd', 'tmnanooe', 'mediabox', 'optimussos1', 'optimussos1plus'):
+if HardwareInfo().get_device_name() in ('ios300hd', 'ios300newhd', 'tmnanooe', 'mediabox', 'optimussos1', 'optimussos1plus'):
 	HDD_PATH="/media/usb/movie/"
 # ]
 

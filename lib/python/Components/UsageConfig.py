@@ -82,14 +82,14 @@ def InitUsageConfig():
 		("no", _("No")), ("popup", _("With popup")), ("without popup", _("Without popup")) ])
 
 # iq [
-	if HardwareInfo().get_device_name() in ('ios300hd', 'tmnanooe', 'mediabox', 'optimussos1', 'optimussos1plus'):
+	if HardwareInfo().get_device_name() in ('ios300hd', 'ios300newhd', 'tmnanooe', 'mediabox', 'optimussos1', 'optimussos1plus'):
 		os.system("rm /hdd; ln -s /media/usb /hdd"); 
 # ]
 	config.usage.default_path = ConfigText(default = resolveFilename(SCOPE_HDD))
 	config.usage.timer_path = ConfigText(default = "<default>")
 	config.usage.instantrec_path = ConfigText(default = "<default>")
 # if [
-	if HardwareInfo().get_device_name() in ('ios300hd', 'tmnanooe', 'mediabox', 'optimussos1', 'optimussos1plus'):
+	if HardwareInfo().get_device_name() in ('ios300hd', 'ios300newhd', 'tmnanooe', 'mediabox', 'optimussos1', 'optimussos1plus'):
 		config.usage.timeshift_path = ConfigText(default = "/media/usb/")
 		config.usage.allowed_timeshift_paths = ConfigLocations(default = ["/media/usb/"])
 	else:

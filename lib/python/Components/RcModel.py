@@ -21,6 +21,8 @@ class RcModel:
 	RCTYPE_FORCE1PLUS = 17
 	RCTYPE_FORCE2 = 18
 	RCTYPE_TMNANO2TSUPER = 19
+	RCTYPE_IOS300NEW = 20
+	RCTYPE_FORCE2SOLID= 21
 
 	def __init__(self):
 		self.currentRcType = self.RCTYPE_DMM
@@ -78,7 +80,10 @@ class RcModel:
 				self.currentRcType = self.RCTYPE_OPTIMUSSOS1PLUS
 			elif model == "optimussos2plus":
 				self.currentRcType = self.RCTYPE_OPTIMUSSOS2PLUS
-
+			elif model == "ios300newhd":
+				self.currentRcType = self.RCTYPE_IOS300NEW
+			elif model == "force2solid":
+				self.currentRcType = self.RCTYPE_FORCE2SOLID
 		elif os.path.exists('/proc/stb/info/boxtype'):
 			model = self.readFile('/proc/stb/info/boxtype')
 			if model.startswith('et') or model.startswith('xp'):
@@ -127,4 +132,8 @@ class RcModel:
 			return '/usr/share/enigma2/rc_models/tm/optimussos2plus/'
 		elif self.currentRcType == self.RCTYPE_TMNANO2T:
 			return '/usr/share/enigma2/rc_models/tm/tmnano2t/'
+		elif self.currentRcType == self.RCTYPE_IOS300NEW:
+			return '/usr/share/enigma2/rc_models/tm/ios300new/'
+		elif self.currentRcType == self.RCTYPE_FORCE2SOLID:
+			return '/usr/share/enigma2/rc_models/tm/force2solid/'
 rc_model = RcModel()

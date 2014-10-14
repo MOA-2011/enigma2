@@ -594,6 +594,10 @@ void *eDVBUsbAdapter::vtunerPump()
 			if (FD_ISSET(demuxFd, &rset))
 			{
 				int size = singleRead(demuxFd, buffer, sizeof(buffer));
+
+				if(size < 188)	/* 2014/07/11, sidabary-vtuner-debug5 */
+					continue;
+
 				if (writeAll(vtunerFd, buffer, size) <= 0)
 				{
 					break;
